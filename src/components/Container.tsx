@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Layout, LayoutProps} from '@ui-kitten/components';
-import {useLayout} from 'hooks';
+import {useLayout} from '../hooks';
 
 interface ContainerProps extends LayoutProps {
   useSafeArea?: boolean;

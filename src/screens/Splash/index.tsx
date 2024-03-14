@@ -1,12 +1,13 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {reset} from '../../navigation/RootNavigation';
 import {Icons} from '../../assets';
+import {Container, VStack} from '../../components';
 
 const Splash = () => {
   useEffect(() => {
     setTimeout(() => {
-      reset('Home');
+      reset('Login');
     }, 3000);
   }, []);
 
@@ -15,14 +16,15 @@ const Splash = () => {
   };
 
   return (
-    <View style={{backgroundColor: '#67AAF9', flex: 1}}>
-      <Image
-        style={styles.image}
-        source={iconMap['splash']}
-        resizeMode="contain"
-      />
-      <Text style={styles.text}>Nature Explorer</Text>
-    </View>
+    <Container level="2">
+      <VStack itemsCenter>
+        <Image
+          style={styles.image}
+          source={iconMap['splash']}
+          resizeMode="contain"
+        />
+      </VStack>
+    </Container>
   );
 };
 
@@ -31,15 +33,14 @@ export default Splash;
 const styles = StyleSheet.create({
   image: {
     width: '70%',
-    height: '40%',
-    alignSelf: 'center',
+    // height: '40%',
     marginTop: '40%',
   },
-  text: {
-    fontSize: 40,
-    fontWeight: '500',
-    textAlign: 'center',
-    letterSpacing: 4,
-    color: '#EBE9E9',
-  },
+  // text: {
+  //   fontSize: 40,
+  //   fontWeight: '500',
+  //   textAlign: 'center',
+  //   letterSpacing: 3,
+  //   color: '#EBE9E9',
+  // },
 });

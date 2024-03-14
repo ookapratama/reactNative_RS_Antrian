@@ -10,6 +10,7 @@ import {navigationRef} from './RootNavigation';
 
 // screens
 import Splash from '../screens/Splash';
+import Login from '../screens/Login';
 
 
 enableScreens();
@@ -26,6 +27,7 @@ const AppContainer = () => {
           initialRouteName={'Splash'}
           screenOptions={{headerShown: false}}>
           <Stack.Screen name="Splash" component={Splash} />
+          <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>

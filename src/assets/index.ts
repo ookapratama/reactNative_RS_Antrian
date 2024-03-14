@@ -9,4 +9,6 @@ export const Icons = {
     info: require('./icon_menu/info.png'),
     student: require('./icon_menu/student.png'),
     object3D: require('./icon_menu/3d.png'),
+    show_eye: require('./icon_menu/eye.png'),
+    hidden_eye: require('./icon_menu/hidden_eye.png')
 };
