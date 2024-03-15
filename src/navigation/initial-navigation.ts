@@ -1,4 +1,5 @@
 export type ScreenStackList = {
     Splash: undefined;
-    Login: undefined;
+    SignIn: undefined;
+    SignUp: undefined;
 }

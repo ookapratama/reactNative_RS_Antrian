@@ -7,7 +7,7 @@ import {Container, VStack} from '../../components';
 const Splash = () => {
   useEffect(() => {
     setTimeout(() => {
-      reset('Login');
+      reset('SignIn');
     }, 3000);
   }, []);
 
@@ -16,7 +16,7 @@ const Splash = () => {
   };
 
   return (
-    <Container level="2">
+    <Container level="1">
       <VStack itemsCenter>
         <Image
           style={styles.image}
