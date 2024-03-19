@@ -1,6 +1,6 @@
 import React, {memo, useEffect, useState} from 'react';
 import {Container, VStack} from '../../components';
-import {Button, Icon, Input, Text} from '@ui-kitten/components';
+import {Button, Icon, Input, Spinner, Text} from '@ui-kitten/components';
 import {
   Alert,
   TouchableWithoutFeedback,
@@ -26,23 +26,24 @@ const debounce = (username, password, delay) => {
 };
 
 const Login = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const debounceHandler = debounce(username, password, 1500);
 
+  // Toggle icon password
   const toggleSecurity = () => {
     setSecureTextEntry(!secureTextEntry);
   };
-
+  // show icon password
   const renderIcon = props => (
     <TouchableWithoutFeedback onPress={toggleSecurity}>
       <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
     </TouchableWithoutFeedback>
   );
 
+  // Sign in handler
   const onSignIn = () => {
     setTimeout(async () => {
       // jika form kosong
@@ -59,11 +60,30 @@ const Login = () => {
         return;
       }
 
-      await AsyncStorage.setItem('nama', data.data.nama);
-      await AsyncStorage.setItem('username', data.data.username);
-      navigate('Home');
+      setTimeout(async () => {
+        await AsyncStorage.setItem('nama', data.data.nama);
+        await AsyncStorage.setItem('username', data.data.username);
+        await AsyncStorage.setItem('status', JSON.stringify(true));
+        navigate('Home');
+      }, 500);
     }, 500);
   };
+
+  // jika sudah/belum login sebelumnya
+  useEffect(() => {
+    const checkUserInfo = async () => {
+      const status = await AsyncStorage.getItem('status');
+      console.log(status)
+      if (status) {
+        navigate('Home');
+        console.log('sudah login');
+      } else {
+        navigate('SignIn');
+        console.log('belum login');
+      }
+    };
+    checkUserInfo();
+  }, []);
 
   return (
     <Container level="1">
