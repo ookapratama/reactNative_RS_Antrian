@@ -6,9 +6,10 @@ import axios from 'axios';
 export const SignUp = async (data: any) => {
   console.log('Sign Up Service');
 
-  console.log(data[0]);
-  console.log(data[1]);
-  console.log(data[2]);
+  console.log(data);
+  console.log('nama :', data[0]);
+  console.log('usernamee :', data[1]);
+  console.log('password :', data[2]);
 
   try {
     const datas = await axios.post(`${BASE_URL_API_AUTH}/register`, {

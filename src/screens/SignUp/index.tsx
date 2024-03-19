@@ -51,12 +51,20 @@ const SignUp = () => {
         return;
       }
       const data = await SignUpService(debounceHandler);
-      console.log(data)
-      // navigate('Loading')
-      // setTimeout(async () => {
-      //   navigate('Home');
-      // }, 500);
 
+      Alert.alert('Success', 'Berhasil register akun', [
+        {
+          text: 'OK',
+          onPress: () => {
+            navigate('Loading');
+            setTimeout(() => {
+              navigate('SignIn');
+              return;
+            }, 3000);
+          },
+        },
+      ]);
+      // console.log(data);
     }, 500);
   };
 
