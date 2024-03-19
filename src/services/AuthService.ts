@@ -10,22 +10,18 @@ export const SignUp = async (data: any) => {
   console.log(data[1]);
   console.log(data[2]);
 
-  const nm = data[0];
-
-  await axios
-    .post(`${BASE_URL_API}/auth/register`, {
-      nama: nm,
+  try {
+    const datas = await axios.post(`${BASE_URL_API_AUTH}/register`, {
+      nama: data[0],
       username: data[1],
       password: data[2],
-    })
-    .then(async response => {
-      const res = await response.data;
-      console.log('sukses');
-    })
-    .catch(error => {
-      console.log(error.response.data);
-      // console.log(error);
     });
+    const res = datas.data;
+    return res;
+  } catch (error) {
+    console.log(error.response.data);
+    return;
+  }
 };
 
 export const SignIn = async (data: any) => {
@@ -40,7 +36,7 @@ export const SignIn = async (data: any) => {
     const res = datas.data;
     return res;
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
     return;
   }
 };

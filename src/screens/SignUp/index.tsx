@@ -39,17 +39,25 @@ const SignUp = () => {
     </TouchableWithoutFeedback>
   );
 
-  const onSignUp = data => {
-    data[0] == '' || data[1] == '' || data[2] == ''
-      ? Alert.alert('Warning', 'Form tidak boleh ada yang kosong', [
-          {
-            text: 'OK',
-            onPress: () => {
-              return;
-            },
-          },
-        ])
-      : SignUpService(data);
+  const onSignUp = () => {
+    setTimeout(async () => {
+      // jika form kosong
+      if (
+        debounceHandler[0] == '' ||
+        debounceHandler[1] == '' ||
+        debounceHandler[2] == ''
+      ) {
+        Alert.alert('Warning', 'Form tidak boleh ada yang kosong');
+        return;
+      }
+      const data = await SignUpService(debounceHandler);
+      console.log(data)
+      // navigate('Loading')
+      // setTimeout(async () => {
+      //   navigate('Home');
+      // }, 500);
+
+    }, 500);
   };
 
   return (
@@ -100,7 +108,7 @@ const SignUp = () => {
           appearance="outline"
           size="large"
           style={{marginHorizontal: 32, borderRadius: 12}}
-          onPress={() => onSignUp(debounceHandler)}>
+          onPress={() => onSignUp()}>
           <Text>Sign up</Text>
         </Button>
       </View>
