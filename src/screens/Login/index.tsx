@@ -1,8 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Container, VStack} from '../../components';
 import {Button, Icon, Input, Text} from '@ui-kitten/components';
-import {TouchableWithoutFeedback, View, useAnimatedValue} from 'react-native';
+import {
+  Alert,
+  TouchableWithoutFeedback,
+  View,
+  useAnimatedValue,
+} from 'react-native';
 import {navigate} from '../../navigation/RootNavigation';
+import {SignIn as SignInService} from '../../services/AuthService';
 
 const debounce = (username, password, delay) => {
   const [debounceValue, setDebounceValue] = useState([]);
@@ -35,6 +41,21 @@ const Login = () => {
     </TouchableWithoutFeedback>
   );
 
+  const onSignIn = () => {
+    debounceHandler[0] == '' || debounceHandler[1] == ''
+      ? Alert.alert('Warning', 'Form tidak boleh ada yang kosong', [
+          {
+            text: 'OK',
+            onPress: () => {
+              return;
+            },
+          },
+        ])
+      : SignInService(debounceHandler);
+  };
+
+  console.log(onSignIn());
+
   return (
     <Container level="1">
       <View style={{flex: 1, justifyContent: 'center'}}>
@@ -59,7 +80,6 @@ const Login = () => {
             accessoryRight={renderIcon}
             placeholder="Password"
             value={password}
-            inputMode="password"
             onChangeText={v => setPassword(v)}
           />
         </VStack>
@@ -76,7 +96,8 @@ const Login = () => {
         <Button
           appearance="outline"
           size="large"
-          style={{marginHorizontal: 32, borderRadius: 12}}>
+          style={{marginHorizontal: 32, borderRadius: 12}}
+          onPress={() => onSignIn()}>
           <Text>Sign in</Text>
         </Button>
       </View>

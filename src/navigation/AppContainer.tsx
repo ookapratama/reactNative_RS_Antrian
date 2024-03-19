@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {enableScreens} from 'react-native-screens';
 import {useTheme} from '@ui-kitten/components';
@@ -12,6 +12,7 @@ import {navigationRef} from './RootNavigation';
 import Splash from '../screens/Splash';
 import SignIn from '../screens/Login';
 import SignUp from '../screens/SignUp';
+import Home from '../screens/Home';
 
 
 enableScreens();
@@ -30,6 +31,7 @@ const AppContainer = () => {
           <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>

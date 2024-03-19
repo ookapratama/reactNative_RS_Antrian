@@ -1,8 +1,9 @@
-import {TouchableWithoutFeedback, View} from 'react-native';
+import {Alert, TouchableWithoutFeedback, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Container, VStack} from '../../components';
 import {Button, Icon, Input, Text} from '@ui-kitten/components';
 import {navigate} from '../../navigation/RootNavigation';
+import {SignUp as SignUpService} from '../../services/AuthService';
 
 const debounce = (nama, username, password, delay) => {
   const [debounceValue, setDebounceValue] = useState([]);
@@ -19,23 +20,37 @@ const debounce = (nama, username, password, delay) => {
 };
 
 const SignUp = () => {
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [nama, setNama] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const debounceHandler = debounce(nama, username, password, 1500);
-  console.log(debounceHandler);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const debounceHandler = debounce(nama, username, password, 1000);
 
+  // Toggle icon password
   const toggleSecurity = () => {
     setSecureTextEntry(!secureTextEntry);
   };
 
-  const renderIcon = props => (
+  // show icon password
+  const renderIcon = (props: any): any => (
     <TouchableWithoutFeedback onPress={toggleSecurity}>
       <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
     </TouchableWithoutFeedback>
   );
+
+  const onSignUp = data => {
+    data[0] == '' || data[1] == '' || data[2] == ''
+      ? Alert.alert('Warning', 'Form tidak boleh ada yang kosong', [
+          {
+            text: 'OK',
+            onPress: () => {
+              return;
+            },
+          },
+        ])
+      : SignUpService(data);
+  };
 
   return (
     <Container level="1">
@@ -84,7 +99,8 @@ const SignUp = () => {
         <Button
           appearance="outline"
           size="large"
-          style={{marginHorizontal: 32, borderRadius: 12}}>
+          style={{marginHorizontal: 32, borderRadius: 12}}
+          onPress={() => onSignUp(debounceHandler)}>
           <Text>Sign up</Text>
         </Button>
       </View>
