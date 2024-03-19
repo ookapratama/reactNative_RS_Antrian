@@ -5,6 +5,7 @@ import Nav from "./Nav";
 import Container from "./Container";
 import Content from "./Content";
 import IDivider from "./IDivider";
+import NavigationAction from "./NavigationAction";
 
 export {
     HStack,
@@ -13,5 +14,6 @@ export {
     Nav,
     Container,
     Content,
-    IDivider
+    IDivider,
+    NavigationAction
 }

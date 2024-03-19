@@ -1,7 +1,7 @@
 import {Image, StyleSheet, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {reset} from '../../navigation/RootNavigation';
-import {Icons} from '../../assets';
+import {Icons} from '../../assets/icon_menu';
 import {Container, VStack} from '../../components';
 
 const Splash = () => {

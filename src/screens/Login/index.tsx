@@ -60,12 +60,13 @@ const Login = () => {
         return;
       }
 
+      navigate('Loading');
       setTimeout(async () => {
         await AsyncStorage.setItem('nama', data.data.nama);
         await AsyncStorage.setItem('username', data.data.username);
         await AsyncStorage.setItem('status', JSON.stringify(true));
         navigate('Home');
-      }, 500);
+      }, 4000);
     }, 500);
   };
 
@@ -73,7 +74,7 @@ const Login = () => {
   useEffect(() => {
     const checkUserInfo = async () => {
       const status = await AsyncStorage.getItem('status');
-      console.log(status)
+      console.log(status);
       if (status) {
         navigate('Home');
         console.log('sudah login');

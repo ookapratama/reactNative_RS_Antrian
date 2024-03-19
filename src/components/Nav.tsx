@@ -2,14 +2,14 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useLayout} from '../hooks';
 import {HStack} from '.';
-import {Icons} from '../assets';
+import {Icons} from '../assets/icon_menu';
 
 const Nav = (props: any) => {
   const {width, height} = useLayout();
   const iconMap = {
     splash: Icons.splash_image,
   };
-  
+
   return (
     <HStack
       style={[styles.nav, {backgroundColor: '#67AAF9'}]}

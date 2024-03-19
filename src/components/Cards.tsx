@@ -12,7 +12,7 @@ import {useLayout} from '../hooks';
 import {navigate} from '../navigation/RootNavigation';
 
 // icon menu
-import {Icons} from '../assets/index';
+import {Icons} from '../assets/icon_menu/index';
 
 const Cards = (props: any) => {
   const {width, height} = useLayout();
