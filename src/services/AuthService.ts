@@ -32,17 +32,15 @@ export const SignIn = async (data: any) => {
   console.log('Sign In Service');
   // console.log(data);
 
-  const datas = await axios
-    .post(`${BASE_URL_API_AUTH}/login`, {
+  try {
+    const datas = await axios.post(`${BASE_URL_API_AUTH}/login`, {
       username: data[0],
       password: data[1],
-    })
-    .then(async response => {
-      const res = response.data;
-      // console.log(res);
-    })
-    .catch(error => {
-      console.log(error.response.data);
     });
-  // console.log(datas);
+    const res = datas.data;
+    return res;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 };

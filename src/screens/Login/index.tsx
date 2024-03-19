@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {Container, VStack} from '../../components';
 import {Button, Icon, Input, Text} from '@ui-kitten/components';
 import {
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {navigate} from '../../navigation/RootNavigation';
 import {SignIn as SignInService} from '../../services/AuthService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const debounce = (username, password, delay) => {
   const [debounceValue, setDebounceValue] = useState([]);
@@ -25,6 +26,7 @@ const debounce = (username, password, delay) => {
 };
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -42,19 +44,26 @@ const Login = () => {
   );
 
   const onSignIn = () => {
-    debounceHandler[0] == '' || debounceHandler[1] == ''
-      ? Alert.alert('Warning', 'Form tidak boleh ada yang kosong', [
-          {
-            text: 'OK',
-            onPress: () => {
-              return;
-            },
-          },
-        ])
-      : SignInService(debounceHandler);
-  };
+    setTimeout(async () => {
+      // jika form kosong
+      if (debounceHandler[0] == '' || debounceHandler[1] == '') {
+        Alert.alert('Warning', 'Form tidak boleh ada yang kosong');
+        return;
+      }
 
-  console.log(onSignIn());
+      const data = await SignInService(debounceHandler);
+
+      // jika value form tidak sesuai
+      if (data.message != 'berhasil login') {
+        Alert.alert('Warning', 'Periksa kembali username dan passowrd anda');
+        return;
+      }
+
+      await AsyncStorage.setItem('nama', data.data.nama);
+      await AsyncStorage.setItem('username', data.data.username);
+      navigate('Home');
+    }, 500);
+  };
 
   return (
     <Container level="1">
@@ -105,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default memo(Login);
