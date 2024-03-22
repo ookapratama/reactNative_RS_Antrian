@@ -41,3 +41,16 @@ export const SignIn = async (data: any) => {
     return;
   }
 };
+
+export const LogOut = async () => {
+  let status = true;
+  try {
+    await AsyncStorage.removeItem('nama');
+    await AsyncStorage.removeItem('username');
+    await AsyncStorage.removeItem('status');
+  } catch (error) {
+    console.log('error logout :', error);
+    return false;
+  }
+  return status;
+};

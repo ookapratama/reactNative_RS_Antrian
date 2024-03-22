@@ -1,7 +1,7 @@
 import {ImageRequireSource} from 'react-native';
 
 export const Icons = {
-  // splash_image: require('./img/ar.png'),
+  splash_image: require('../img/ar.png'),
   'about': require('./about.png'),
   'camera': require('./camera.png'),
   'exit': require('./exit-door.png'),
