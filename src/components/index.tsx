@@ -6,6 +6,7 @@ import Container from "./Container";
 import Content from "./Content";
 import IDivider from "./IDivider";
 import NavigationAction from "./NavigationAction";
+import IconNavigation from "./IconNavigation";
 
 export {
     HStack,
@@ -15,5 +16,6 @@ export {
     Container,
     Content,
     IDivider,
-    NavigationAction
+    NavigationAction,
+    IconNavigation
 }
