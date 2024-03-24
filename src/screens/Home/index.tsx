@@ -1,9 +1,23 @@
-import {View, Image, StyleSheet, Alert} from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  Alert,
+  TouchableHighlight,
+  Dimensions,
+} from 'react-native';
 import React, {useState} from 'react';
-import {Container, HStack, IconNavigation, VStack} from '../../components';
-import {Text} from '@ui-kitten/components';
+import {
+  Container,
+  HStack,
+  IDivider,
+  IconNavigation,
+  VStack,
+} from '../../components';
+import {Button, StyleService, Text, useStyleSheet} from '@ui-kitten/components';
 import {LogOut} from '../../services/AuthService';
 import {navigate} from '../../navigation/RootNavigation';
+import Antrian from '../../components/Antrian';
 
 const onLogOut = () => {
   Alert.alert('Warning', 'Ingin Logout Akun? ', [
@@ -16,7 +30,7 @@ const onLogOut = () => {
       onPress: async () => {
         const status = await LogOut();
         if (status) {
-          console.log(status);
+          // console.log(status);
           Alert.alert('Success', 'Berhasil Logout');
           navigate('SignIn');
         } else Alert.alert('Warning', 'Terjadi kesalahan saat Logout');
@@ -26,8 +40,10 @@ const onLogOut = () => {
 };
 
 const Home = () => {
-  const [activePasien, setActivePasien] = useState(true);
-  const [activeAntrian, setActiveAntrian] = useState(false);
+  const styles = useStyleSheet(themedStyles);
+
+  const [activePasien, setActivePasien] = useState(false);
+  const [activeAntrian, setActiveAntrian] = useState(true);
 
   const handleActvieMenu = (menuName: string) => {
     if (menuName == 'Pasien') {
@@ -40,7 +56,7 @@ const Home = () => {
   };
 
   return (
-    <Container level="1">
+    <Container level="1" style={styles.container}>
       <HStack level="4" padding={24} itemsCenter>
         <Text style={{fontSize: 50, fontWeight: '700', color: 'black'}}>
           Home
@@ -52,28 +68,37 @@ const Home = () => {
           marginTop={10}
         />
       </HStack>
+
       <HStack level="4" ph={24} pv={24} justify="flex-start" itemsCenter>
         <Text
           style={[
-            [styles.menu, {color: activePasien ? 'black' : 'grey'}],
-            {marginRight: 24},
+            styles.menu,
+            {color: activeAntrian ? 'black' : 'grey', marginRight: 24},
           ]}
-          onPress={() => handleActvieMenu('Pasien')}>
-          Pasien
-        </Text>
-        <Text
-          style={[styles.menu, {color: activeAntrian ? 'black' : 'grey'}]}
           onPress={() => handleActvieMenu('Antrian')}>
           Antrian
         </Text>
+        <Text
+          style={[[styles.menu, {color: activePasien ? 'black' : 'grey'}]]}
+          onPress={() => handleActvieMenu('Pasien')}>
+          Pasien
+        </Text>
       </HStack>
+
+      {/* Screen Antrian */}
+      <Antrian />
     </Container>
   );
 };
 
 export default Home;
 
-const styles = StyleSheet.create({
+const themedStyles = StyleService.create({
+  container: {
+    flex: 1,
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
   menu: {
     fontSize: 16,
     textTransform: 'uppercase',

@@ -64,6 +64,8 @@ const Login = () => {
       setTimeout(async () => {
         await AsyncStorage.setItem('nama', data.data.nama);
         await AsyncStorage.setItem('username', data.data.username);
+        await AsyncStorage.setItem('no_rm', data.data.no_rm);
+        await AsyncStorage.setItem('user_id', data.data.id);
         await AsyncStorage.setItem('status', JSON.stringify(true));
         navigate('Home');
       }, 4000);
@@ -83,6 +85,8 @@ const Login = () => {
         console.log('belum login');
       }
     };
+    setUsername('');
+    setPassword('');
     checkUserInfo();
   }, []);
 

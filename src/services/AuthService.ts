@@ -48,6 +48,8 @@ export const LogOut = async () => {
     await AsyncStorage.removeItem('nama');
     await AsyncStorage.removeItem('username');
     await AsyncStorage.removeItem('status');
+    await AsyncStorage.removeItem('no_rm');
+    await AsyncStorage.removeItem('id');
   } catch (error) {
     console.log('error logout :', error);
     return false;
