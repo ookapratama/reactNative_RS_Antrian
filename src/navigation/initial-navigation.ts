@@ -4,4 +4,6 @@ export type ScreenStackList = {
   SignUp: undefined;
   Home: undefined;
   Loading: undefined;
+  Antrian: undefined;
+  Pasien: undefined;
 };

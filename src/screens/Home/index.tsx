@@ -12,11 +12,15 @@ import {
   HStack,
   IDivider,
   IconNavigation,
+  Pasien,
+  TabScreen,
   VStack,
 } from '../../components';
 import {Button, StyleService, Text, useStyleSheet} from '@ui-kitten/components';
 import {LogOut} from '../../services/AuthService';
 import {navigate} from '../../navigation/RootNavigation';
+import {NavigationContainer} from '@react-navigation/native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Antrian from '../../components/Antrian';
 
 const onLogOut = () => {
@@ -85,8 +89,9 @@ const Home = () => {
         </Text>
       </HStack>
 
-      {/* Screen Antrian */}
-      <Antrian />
+      {/* Navigation Antrain dan Pasien */}
+      {activeAntrian ? <Antrian /> : <Pasien />}
+      
     </Container>
   );
 };

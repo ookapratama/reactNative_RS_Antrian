@@ -7,6 +7,9 @@ import Content from "./Content";
 import IDivider from "./IDivider";
 import NavigationAction from "./NavigationAction";
 import IconNavigation from "./IconNavigation";
+import TabScreen from "./TabScreen";
+import Antrian from "./Antrian";
+import Pasien from "./Pasien";
 
 export {
     HStack,
@@ -17,5 +20,8 @@ export {
     Content,
     IDivider,
     NavigationAction,
-    IconNavigation
+    IconNavigation,
+    TabScreen,
+    Antrian,
+    Pasien
 }
