@@ -51,6 +51,15 @@ export const detailPasien = async (no_rm: any) => {
   }
 };
 
-export const getHistory = async () => {
+export const getHistory = async (no_rm: any) => {
   console.log('history pasien');
+  try {
+    // const datas = await axios.get(`${BASE_URL_API}/pasien/history/${no_rm}`);
+    const datas = await axios.get(`${BASE_URL_API}/pasien/history/${no_rm}`);
+    const res = datas.data;
+    
+    return res;
+  } catch (error) {
+    console.log(error.response.data);
+  }
 };

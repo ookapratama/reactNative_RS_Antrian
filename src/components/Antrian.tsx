@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
-import {HStack, VStack} from '.';
+import {Container, HStack, VStack} from '.';
 import {Button, Card, Input, Modal, Text} from '@ui-kitten/components';
 import {Alert, ScrollView, StyleSheet, RefreshControl} from 'react-native';
 import {
@@ -9,14 +9,12 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 
-
 const Antrian = () => {
   const [showAntrian, setShowAntrian] = useState(false);
   const [rm, setRm] = useState('');
   const [refreshPage, setRefreshPage] = useState(false);
   const [data, setData] = useState([]);
   const [formattedDate, setFormattedDate] = useState();
-  
 
   const createAntrian = async () => {
     const noAntrian = await AsyncStorage.getItem('no_rm');
@@ -55,7 +53,7 @@ const Antrian = () => {
     console.log('get : ', getData?.data);
     if (getData?.data != undefined) {
       setShowAntrian(true);
-      setFormattedDate(moment(getData.tgl_antrian).format('DD-MM-YYYY'))
+      setFormattedDate(moment(getData.tgl_antrian).format('DD-MM-YYYY'));
       return setData(getData?.data);
     }
     setShowAntrian(false);
@@ -67,7 +65,7 @@ const Antrian = () => {
   }, []);
 
   return (
-    <>
+    <Container>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshPage} onRefresh={onRefresh} />
@@ -180,7 +178,7 @@ const Antrian = () => {
           Ambil Antrian
         </Button>
       </ScrollView>
-    </>
+    </Container>
   );
 };
 

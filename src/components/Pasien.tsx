@@ -148,7 +148,7 @@ const Pasien = () => {
       no_rm,
       nama_pasien,
       tempat_lahir,
-      tgl_lahir,
+      moment(tgl_lahir).format('DD-MM-YYYY'),
       jkl_pasien,
       alamat_pasien,
       no_telpon,
@@ -195,7 +195,8 @@ const Pasien = () => {
                 <VStack justify="flex-start">
                   <Text category="h6">NO REKAM MEDIS </Text>
                   <Text category="h6">NAMA </Text>
-                  <Text category="h6">TEMPAT/TGL LAHIR </Text>
+                  <Text category="h6">TEMPAT LAHIR </Text>
+                  <Text category="h6">TGL LAHIR </Text>
                   <Text category="h6">JENIS KELAMIN </Text>
                   <Text category="h6">ALAMAT </Text>
                   <Text category="h6">NO TELEPON </Text>
@@ -205,9 +206,8 @@ const Pasien = () => {
                 <VStack justify="flex-start" ps={34}>
                   <Text category="h6">: {profilPasien[0]}</Text>
                   <Text category="h6">: {profilPasien[1]} </Text>
-                  <Text category="h6">
-                    : {`${profilPasien[2]} / ${profilPasien[3]}`}{' '}
-                  </Text>
+                  <Text category="h6">: {profilPasien[2]}</Text>
+                  <Text category="h6">: {profilPasien[3]} </Text>
                   <Text category="h6">: {profilPasien[4]} </Text>
                   <Text category="h6">: {profilPasien[5]} </Text>
                   <Text category="h6">: {profilPasien[6]} </Text>
@@ -237,11 +237,11 @@ const Pasien = () => {
             </HStack>
           )}
         </VStack>
-        <Divider />
 
         {/* List History antrian */}
-        <HistoryAntrian />
+        <Divider />
       </ScrollView>
+      <HistoryAntrian />
 
       {/* Form Modal */}
       <Modal
