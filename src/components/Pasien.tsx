@@ -1,5 +1,5 @@
 import {Alert, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
   Card,
@@ -13,7 +13,10 @@ import {
 } from '@ui-kitten/components';
 import {VStack, HStack} from '.';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createRegis as RegisService} from '../services/PasienService';
+import {
+  createRegis as RegisService,
+  detailPasien,
+} from '../services/PasienService';
 import {LogOut as onLogOut} from '../services/AuthService';
 import {navigate} from '../navigation/RootNavigation';
 
@@ -21,6 +24,9 @@ const jkl = ['Laki-laki', 'Perempuan'];
 
 const Pasien = () => {
   const [showModal, setShowModal] = useState(false);
+  const [profilPasien, setProfilPasien] = useState([]);
+  console.log('profil pasien: ', profilPasien);
+  const [isRegis, setIsRegis] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<IndexPath>(
     new IndexPath(0),
   );
@@ -53,6 +59,7 @@ const Pasien = () => {
       tempatLahir,
       formattedDate,
       displayValue,
+      alamat,
       telepon,
       user_id,
     ];
@@ -67,18 +74,55 @@ const Pasien = () => {
       {
         text: 'OK',
         onPress: async () => {
-          Alert.alert('Message', 'Silahkan login kembali');
-          const status = await onLogOut();
+          setShowModal(false);
+          console.log(res.no_rm);
+          const detail = await detailPasien(res.no_rm);
 
-          if (status) {
-            // console.log(status);
-            navigate('SignIn');
-          } else Alert.alert('Warning', 'Terjadi kesalahan saat Logout');
+          console.log('detail : ', detail);
+          console.log('detail : ', detail.data.no_rekam_medis);
+
+          await AsyncStorage.setItem('no_rm', detail.data.no_rekam_medis);
+          await AsyncStorage.setItem('nama', detail.data.nama);
+          await AsyncStorage.setItem('tempat_lahir', detail.data.tempat_lahir);
+          await AsyncStorage.setItem('tgl_lahir', detail.data.tgl_lahir);
+          await AsyncStorage.setItem('jkl', detail.data.jkl);
+          await AsyncStorage.setItem('alamat', detail.data.alamat);
+          await AsyncStorage.setItem('no_telpon', detail.data.no_telpon);
+
+          // setNama('');
+          // setAlamat('');
+          // setTempatLahir('');
+          // setTelepon('');
+          setIsRegis(true);
         },
       },
     ]);
     return;
   };
+
+  useEffect(() => {
+    const setProfile = async () => {
+      const no_rm = await AsyncStorage.getItem('no_rm');
+      const nama_pasien = await AsyncStorage.getItem('nama');
+      const tempat_lahir = await AsyncStorage.getItem('tempat_lahir');
+      const tgl_lahir = await AsyncStorage.getItem('tgl_lahir');
+      const jkl_pasien = await AsyncStorage.getItem('jkl');
+      const alamat_pasien = await AsyncStorage.getItem('alamat');
+      const no_telpon = await AsyncStorage.getItem('no_telpon');
+
+      setProfilPasien([
+        no_rm,
+        nama_pasien,
+        tempat_lahir,
+        tgl_lahir,
+        jkl_pasien,
+        alamat_pasien,
+        no_telpon,
+      ]);
+      setIsRegis(true);
+    };
+    setProfile();
+  }, []);
 
   return (
     <View>
@@ -87,12 +131,57 @@ const Pasien = () => {
           style={{
             textTransform: 'uppercase',
             letterSpacing: 2,
-            marginBottom: 24,
+            marginBottom: 14,
           }}
           category="h2">
           Pasien
         </Text>
-        <Button onPress={() => setShowModal(true)}>Registrasi Pasien</Button>
+        {isRegis ? (
+          <>
+            <HStack
+              style={[styles.shadow, {borderRadius: 12}]}
+              level="4"
+              mb={20}
+              padder>
+              <VStack justify="flex-start">
+                <Text category="h6">NO REKAM MEDIS </Text>
+                <Text category="h6">NAMA </Text>
+                <Text category="h6">TEMPAT/TGL LAHIR </Text>
+                <Text category="h6">JENIS KELAMIN </Text>
+                <Text category="h6">ALAMAT </Text>
+                <Text category="h6">NO TELEPON </Text>
+                {/* <Text category="h5">{profilPasien[0]}</Text>
+              <Text category="h5">{profilPasien[1]}</Text> */}
+              </VStack>
+              <VStack justify="flex-start" ps={34}>
+                <Text category="h6">: {profilPasien[0]}</Text>
+                <Text category="h6">: {profilPasien[1]} </Text>
+                <Text category="h6">
+                  : {`${profilPasien[2]} / ${profilPasien[3]}`}{' '}
+                </Text>
+                <Text category="h6">: {profilPasien[4]} </Text>
+                <Text category="h6">: {profilPasien[5]} </Text>
+                <Text category="h6">: {profilPasien[6]} </Text>
+              </VStack>
+            </HStack>
+            <Button status='warning' onPress={() => setShowModal(true)}>
+              Update Pasien
+            </Button>
+          </>
+        ) : (
+          <HStack
+            style={[styles.shadow, {borderRadius: 12}]}
+            level="4"
+            padder
+            mb={20}>
+            <Text category="h6" style={{textAlign: 'center'}}>
+              Harus lengkapi profil dulu{'\n'} silahkan registrasi!
+            </Text>
+            <Button onPress={() => setShowModal(true)}>
+              Registrasi Pasien
+            </Button>
+          </HStack>
+        )}
       </VStack>
 
       {/* Form Modal */}
@@ -179,5 +268,15 @@ export default Pasien;
 const styles = StyleSheet.create({
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  shadow: {
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5.62,
+    elevation: 7,
   },
 });
