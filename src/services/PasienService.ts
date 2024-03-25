@@ -20,6 +20,27 @@ export const createRegis = async (data: any) => {
   }
 };
 
+export const updateRegis = async (data, no_rm) : any => {
+  console.log(data);
+  console.log(no_rm);
+  try {
+    const datas = await axios.post(`${BASE_URL_API}/pasien/update/${data[0]}`, {
+      nama: data[0],
+      tempat_lahir: data[1],
+      tgl_lahir: data[2],
+      jkl: data[3],
+      alamat: data[4],
+      no_telpon: data[5],
+      user_id: data[6],
+    });
+    const res = datas.data;
+    return res;
+  } catch (error) {
+    console.log(error.response.data);
+    return;
+  }
+};
+
 export const detailPasien = async (no_rm: string) => {
   try {
     const datas = await axios.get(`${BASE_URL_API}/pasien/detail/${no_rm}`);

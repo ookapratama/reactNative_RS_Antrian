@@ -7,7 +7,6 @@ import Content from "./Content";
 import IDivider from "./IDivider";
 import NavigationAction from "./NavigationAction";
 import IconNavigation from "./IconNavigation";
-import TabScreen from "./TabScreen";
 import Antrian from "./Antrian";
 import Pasien from "./Pasien";
 
@@ -21,7 +20,6 @@ export {
     IDivider,
     NavigationAction,
     IconNavigation,
-    TabScreen,
     Antrian,
     Pasien
 }
