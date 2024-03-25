@@ -1,11 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Antrian from './Antrian';
 import Pasien from './Pasien';
 
-const Tab = createMaterialTopTabNavigator();
 
 const TabScreen = () => {
   return (
