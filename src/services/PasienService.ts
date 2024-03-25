@@ -20,8 +20,8 @@ export const createRegis = async (data: any) => {
   }
 };
 
-export const updateRegis = async (data, no_rm) : any => {
-  console.log(data);
+export const updateRegis = async (data, no_rm): any => {
+  console.log('update service : ', data);
   console.log(no_rm);
   try {
     const datas = await axios.post(`${BASE_URL_API}/pasien/update/${data[0]}`, {
@@ -41,7 +41,7 @@ export const updateRegis = async (data, no_rm) : any => {
   }
 };
 
-export const detailPasien = async (no_rm: string) => {
+export const detailPasien = async (no_rm: any) => {
   try {
     const datas = await axios.get(`${BASE_URL_API}/pasien/detail/${no_rm}`);
     const res = datas.data;

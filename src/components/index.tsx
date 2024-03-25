@@ -9,6 +9,7 @@ import NavigationAction from "./NavigationAction";
 import IconNavigation from "./IconNavigation";
 import Antrian from "./Antrian";
 import Pasien from "./Pasien";
+import HistoryAntrian from "./HistoryAntrian";
 
 export {
     HStack,
@@ -21,5 +22,6 @@ export {
     NavigationAction,
     IconNavigation,
     Antrian,
-    Pasien
+    Pasien,
+    HistoryAntrian
 }

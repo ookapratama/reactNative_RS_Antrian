@@ -10,6 +10,7 @@ import {
   Button,
   Card,
   Datepicker,
+  Divider,
   IndexPath,
   Input,
   Modal,
@@ -17,7 +18,7 @@ import {
   SelectItem,
   Text,
 } from '@ui-kitten/components';
-import {VStack, HStack} from '.';
+import {VStack, HStack, HistoryAntrian} from '.';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createRegis as RegisService,
@@ -78,10 +79,13 @@ const Pasien = () => {
     let res = false;
 
     if (status === 'create') {
+      console.log('create');
       res = await RegisService(data);
     } else {
+      console.log('update');
       res = await updateRegis(data, noRM);
     }
+
     console.log('res : ', res);
     if (res === false) {
       Alert.alert('Warning', 'Profil gagal di lengkapi');
@@ -93,8 +97,7 @@ const Pasien = () => {
         text: 'OK',
         onPress: async () => {
           setShowModal(false);
-          console.log(res?.no_rm ?? noRM);
-          const detail = await detailPasien(res?.no_rm ?? noRM);
+          const detail = await detailPasien(noRM);
 
           console.log('detail : ', detail);
           console.log('detail : ', detail.data?.no_rekam_medis ?? noRM);
@@ -103,26 +106,18 @@ const Pasien = () => {
             'no_rm',
             detail.data?.no_rekam_medis ?? noRM,
           );
-          await AsyncStorage.setItem('nama', detail.data?.nama ?? nama);
-          await AsyncStorage.setItem(
-            'tempat_lahir',
-            detail.data?.tempat_lahir ?? tempatLahir,
-          );
-          await AsyncStorage.setItem(
-            'tgl_lahir',
-            detail.data?.tgl_lahir ?? formattedDate,
-          );
-          await AsyncStorage.setItem('jkl', detail.data?.jkl ?? displayValue);
-          await AsyncStorage.setItem('alamat', detail.data?.alamat ?? alamat);
-          await AsyncStorage.setItem(
-            'no_telpon',
-            detail.data?.no_telpon ?? telepon,
-          );
+          await AsyncStorage.setItem('nama', nama);
+          await AsyncStorage.setItem('tempat_lahir', tempatLahir);
+          await AsyncStorage.setItem('tgl_lahir', formattedDate);
+          await AsyncStorage.setItem('jkl', displayValue);
+          await AsyncStorage.setItem('alamat', alamat);
+          await AsyncStorage.setItem('no_telpon', telepon);
 
           // setNama('');
           // setAlamat('');
           // setTempatLahir('');
           // setTelepon('');
+          onRefresh();
           setIsRegis(true);
         },
       },
@@ -242,6 +237,10 @@ const Pasien = () => {
             </HStack>
           )}
         </VStack>
+        <Divider />
+
+        {/* List History antrian */}
+        <HistoryAntrian />
       </ScrollView>
 
       {/* Form Modal */}
