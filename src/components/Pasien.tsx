@@ -16,6 +16,7 @@ import {
   Modal,
   Select,
   SelectItem,
+  Spinner,
   Text,
 } from '@ui-kitten/components';
 import {VStack, HStack, HistoryAntrian} from '.';
@@ -36,6 +37,7 @@ const Pasien = () => {
   const [profilPasien, setProfilPasien] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [isRegis, setIsRegis] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<IndexPath>(
@@ -158,89 +160,101 @@ const Pasien = () => {
   };
 
   useEffect(() => {
-    setProfile();
+    setTimeout(() => {
+      setProfile();
 
-    if (isUpdate) {
-      setNoRM(profilPasien[0]);
-      setNama(profilPasien[1]);
-      setTempatLahir(profilPasien[2]);
-      setAlamat(profilPasien[5]);
-      setTelepon(profilPasien[6]);
-    }
+      if (isUpdate) {
+        setNoRM(profilPasien[0]);
+        setNama(profilPasien[1]);
+        setTempatLahir(profilPasien[2]);
+        setAlamat(profilPasien[5]);
+        setTelepon(profilPasien[6]);
+      }
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
   return (
     <View style={{flex: 1}}>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshPage} onRefresh={onRefresh} />
-        }>
-        <VStack itemsCenter mv={24}>
-          <Text
-            style={{
-              textTransform: 'uppercase',
-              letterSpacing: 2,
-              marginBottom: 14,
-            }}
-            category="h2">
-            Pasien
-          </Text>
-          {isRegis ? (
-            <>
-              <HStack
-                style={[styles.shadow, {borderRadius: 12}]}
-                level="4"
-                mb={20}
-                padder>
-                <VStack justify="flex-start">
-                  <Text category="h6">NO REKAM MEDIS </Text>
-                  <Text category="h6">NAMA </Text>
-                  <Text category="h6">TEMPAT LAHIR </Text>
-                  <Text category="h6">TGL LAHIR </Text>
-                  <Text category="h6">JENIS KELAMIN </Text>
-                  <Text category="h6">ALAMAT </Text>
-                  <Text category="h6">NO TELEPON </Text>
-                  {/* <Text category="h5">{profilPasien[0]}</Text>
+      {isLoading ? (
+        <HStack justify="center" mv={160}>
+          <Spinner size="giant" />
+        </HStack>
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshPage} onRefresh={onRefresh} />
+          }>
+          <VStack itemsCenter mv={24}>
+            <Text
+              style={{
+                textTransform: 'uppercase',
+                letterSpacing: 2,
+                marginBottom: 14,
+              }}
+              category="h2">
+              Pasien
+            </Text>
+            {isRegis ? (
+              <>
+                <HStack
+                  style={[styles.shadow, {borderRadius: 12}]}
+                  level="4"
+                  mb={20}
+                  padder>
+                  <VStack justify="flex-start">
+                    <Text category="h6">NO REKAM MEDIS </Text>
+                    <Text category="h6">NAMA </Text>
+                    <Text category="h6">TEMPAT LAHIR </Text>
+                    <Text category="h6">TGL LAHIR </Text>
+                    <Text category="h6">JENIS KELAMIN </Text>
+                    <Text category="h6">ALAMAT </Text>
+                    <Text category="h6">NO TELEPON </Text>
+                    {/* <Text category="h5">{profilPasien[0]}</Text>
               <Text category="h5">{profilPasien[1]}</Text> */}
+                  </VStack>
+                  <VStack justify="flex-start" ps={34}>
+                    <Text category="h6">: {profilPasien[0]}</Text>
+                    <Text category="h6">: {profilPasien[1]} </Text>
+                    <Text category="h6">: {profilPasien[2]}</Text>
+                    <Text category="h6">: {profilPasien[3]} </Text>
+                    <Text category="h6">: {profilPasien[4]} </Text>
+                    <Text category="h6">: {profilPasien[5]} </Text>
+                    <Text category="h6">: {profilPasien[6]} </Text>
+                  </VStack>
+                </HStack>
+                <Button
+                  status="warning"
+                  onPress={() => {
+                    setShowModal(true);
+                    setIsUpdate(true);
+                  }}>
+                  Update Pasien
+                </Button>
+              </>
+            ) : (
+              <>
+                <VStack
+                  style={[styles.shadow, {borderRadius: 12}]}
+                  level="4"
+                  padder
+                  mb={20}>
+                  <Text category="h6" style={{textAlign: 'center'}}>
+                    Harus lengkapi profil dulu{'\n'} silahkan registrasi!
+                  </Text>
                 </VStack>
-                <VStack justify="flex-start" ps={34}>
-                  <Text category="h6">: {profilPasien[0]}</Text>
-                  <Text category="h6">: {profilPasien[1]} </Text>
-                  <Text category="h6">: {profilPasien[2]}</Text>
-                  <Text category="h6">: {profilPasien[3]} </Text>
-                  <Text category="h6">: {profilPasien[4]} </Text>
-                  <Text category="h6">: {profilPasien[5]} </Text>
-                  <Text category="h6">: {profilPasien[6]} </Text>
-                </VStack>
-              </HStack>
-              <Button
-                status="warning"
-                onPress={() => {
-                  setShowModal(true);
-                  setIsUpdate(true);
-                }}>
-                Update Pasien
-              </Button>
-            </>
-          ) : (
-            <HStack
-              style={[styles.shadow, {borderRadius: 12}]}
-              level="4"
-              padder
-              mb={20}>
-              <Text category="h6" style={{textAlign: 'center'}}>
-                Harus lengkapi profil dulu{'\n'} silahkan registrasi!
-              </Text>
-              <Button onPress={() => setShowModal(true)}>
-                Registrasi Pasien
-              </Button>
-            </HStack>
-          )}
-        </VStack>
+                <Button onPress={() => setShowModal(true)}>
+                  Registrasi Pasien
+                </Button>
+              </>
+            )}
+          </VStack>
 
-        {/* List History antrian */}
-        <Divider />
-      </ScrollView>
+          {/* List History antrian */}
+          <Divider />
+        </ScrollView>
+      )}
+
       <HistoryAntrian />
 
       {/* Form Modal */}

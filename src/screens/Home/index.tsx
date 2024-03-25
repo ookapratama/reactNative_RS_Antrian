@@ -57,7 +57,7 @@ const Home = () => {
   };
 
   return (
-    <View  style={styles.container}>
+    <View style={styles.container}>
       <HStack level="4" padding={24} itemsCenter>
         <Text style={{fontSize: 50, fontWeight: '700', color: 'black'}}>
           Home
@@ -87,9 +87,8 @@ const Home = () => {
       </HStack>
 
       {/* Navigation Antrain dan Pasien */}
-      
+
       {activeAntrian ? <Antrian /> : <Pasien />}
-      
     </View>
   );
 };

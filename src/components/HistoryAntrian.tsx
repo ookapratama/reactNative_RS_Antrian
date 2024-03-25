@@ -76,7 +76,7 @@ const HistoryAntrian = () => {
       </HStack>
       {isHistory ? (
         <FlatList
-        style={{height:320}}
+          style={{height: 320}}
           data={history.data}
           renderItem={({item}) => (
             <Content>
