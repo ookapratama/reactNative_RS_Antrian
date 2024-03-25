@@ -13,14 +13,11 @@ import {
   IDivider,
   IconNavigation,
   Pasien,
-  TabScreen,
   VStack,
 } from '../../components';
 import {Button, StyleService, Text, useStyleSheet} from '@ui-kitten/components';
 import {LogOut} from '../../services/AuthService';
 import {navigate} from '../../navigation/RootNavigation';
-import {NavigationContainer} from '@react-navigation/native';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Antrian from '../../components/Antrian';
 
 const onLogOut = () => {
@@ -50,10 +47,10 @@ const Home = () => {
   const [activeAntrian, setActiveAntrian] = useState(true);
 
   const handleActvieMenu = (menuName: string) => {
-    if (menuName == 'Pasien') {
+    if (menuName === 'Pasien') {
       setActivePasien(true);
       setActiveAntrian(false);
-    } else if (menuName == 'Antrian') {
+    } else if (menuName === 'Antrian') {
       setActiveAntrian(true);
       setActivePasien(false);
     }
@@ -90,6 +87,7 @@ const Home = () => {
       </HStack>
 
       {/* Navigation Antrain dan Pasien */}
+      
       {activeAntrian ? <Antrian /> : <Pasien />}
       
     </View>

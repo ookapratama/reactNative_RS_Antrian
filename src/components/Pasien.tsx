@@ -158,6 +158,8 @@ const Pasien = () => {
   };
 
   useEffect(() => {
+    setProfile();
+
     if (isUpdate) {
       setNoRM(profilPasien[0]);
       setNama(profilPasien[1]);
@@ -165,12 +167,10 @@ const Pasien = () => {
       setAlamat(profilPasien[5]);
       setTelepon(profilPasien[6]);
     }
-
-    setProfile();
   }, []);
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshPage} onRefresh={onRefresh} />
