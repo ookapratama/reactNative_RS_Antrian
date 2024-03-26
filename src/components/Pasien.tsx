@@ -99,14 +99,15 @@ const Pasien = () => {
         text: 'OK',
         onPress: async () => {
           setShowModal(false);
-          const detail = await detailPasien(noRM);
 
+          console.log('adakah : ', res.no_rm);
+          const detail = await detailPasien(profilPasien[0]);
           console.log('detail : ', detail);
-          console.log('detail : ', detail.data?.no_rekam_medis ?? noRM);
+          console.log('detail rm : ', detail.data?.no_rekam_medis ?? res.no_rm);
 
           await AsyncStorage.setItem(
             'no_rm',
-            detail.data?.no_rekam_medis ?? noRM,
+            detail.data?.no_rekam_medis ?? res.no_rm,
           );
           await AsyncStorage.setItem('nama', nama);
           await AsyncStorage.setItem('tempat_lahir', tempatLahir);
@@ -139,31 +140,34 @@ const Pasien = () => {
   // update data pasien
   const setProfile = async () => {
     const no_rm = await AsyncStorage.getItem('no_rm');
-    const nama_pasien = await AsyncStorage.getItem('nama');
-    const tempat_lahir = await AsyncStorage.getItem('tempat_lahir');
-    const tgl_lahir = await AsyncStorage.getItem('tgl_lahir');
-    const jkl_pasien = await AsyncStorage.getItem('jkl');
-    const alamat_pasien = await AsyncStorage.getItem('alamat');
-    const no_telpon = await AsyncStorage.getItem('no_telpon');
+    const detail = await detailPasien(no_rm);
 
-    setProfilPasien([
-      no_rm,
-      nama_pasien,
-      tempat_lahir,
-      moment(tgl_lahir).format('DD-MM-YYYY'),
-      jkl_pasien,
-      alamat_pasien,
-      no_telpon,
-    ]);
+    console.log('set :', detail);
+    const res = detail.data;
 
-    setIsRegis(true);
+    if (detail.message === 'data tidak di temukan') {
+      setIsRegis(false);
+      return;
+    } else {
+      setProfilPasien([
+        res?.no_rekam_medis ?? '',
+        res?.nama ?? '',
+        res?.tempat_lahir ?? '',
+        moment(res?.tgl_lahir ?? '').format('DD-MM-YYYY'),
+        res?.jkl ?? '',
+        res?.alamat ?? '',
+        res?.no_telpon ?? '',
+      ]);
+
+      setIsRegis(true);
+    }
   };
 
   useEffect(() => {
     setTimeout(() => {
       setProfile();
 
-      if (isUpdate) {
+      if (!isUpdate) {
         setNoRM(profilPasien[0]);
         setNama(profilPasien[1]);
         setTempatLahir(profilPasien[2]);
@@ -243,7 +247,11 @@ const Pasien = () => {
                     Harus lengkapi profil dulu{'\n'} silahkan registrasi!
                   </Text>
                 </VStack>
-                <Button onPress={() => setShowModal(true)}>
+                <Button
+                  onPress={() => {
+                    setShowModal(true);
+                    setIsUpdate(false);
+                  }}>
                   Registrasi Pasien
                 </Button>
               </>

@@ -19,27 +19,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getHistory} from '../services/PasienService';
 import moment from 'moment';
 
-interface IListItem {
-  title: string;
-  description: string;
-}
-
 const data = new Array(18).fill({
-  title: 'Title for Item',
-  description: 'Description for Item',
+  no_rekam_medis: 'Title for Item',
+  tgl_antrian: 'Description for Item',
+  no_antrian: '0001',
 });
 
-const rightItem = () => {
-  <Text>12-21-2023</Text>;
-};
-
-const renderListItem = ({item, index}: {item: IListItem; index: number}) => {
-  <ListItem
-    title={`${item.title} ${index + 1}`}
-    description={`${item.description} ${index + 1}`}
-    accessoryRight={rightItem}
-  />;
-};
+console.log(data);
 
 const HistoryAntrian = () => {
   const [history, setHistory] = useState([]);
@@ -97,9 +83,18 @@ const HistoryAntrian = () => {
           )}
         />
       ) : (
-        <HStack justify="center" mt={24}>
-          <Text category="h6">Riwayat Antrian tidak ada</Text>
-        </HStack>
+        // <HStack justify="center" mt={24}>
+        // </HStack>
+        <Content style={{height: 320}}>
+          <Card
+            status="basic"
+            style={{marginHorizontal: 12, marginVertical: 6}}>
+            <Text style={{textAlign: 'center'}} category="h6">
+              Riwayat Antrian tidak ada
+            </Text>
+          </Card>
+          <Divider />
+        </Content>
       )}
     </View>
   );

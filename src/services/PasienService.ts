@@ -24,7 +24,7 @@ export const updateRegis = async (data, no_rm): any => {
   console.log('update service : ', data);
   console.log(no_rm);
   try {
-    const datas = await axios.post(`${BASE_URL_API}/pasien/update/${data[0]}`, {
+    const datas = await axios.post(`${BASE_URL_API}/pasien/update/${no_rm}`, {
       nama: data[0],
       tempat_lahir: data[1],
       tgl_lahir: data[2],

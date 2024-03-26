@@ -23,6 +23,12 @@ const Antrian = () => {
     const data = await createAntrianService(noAntrian);
 
     if (data?.message != 'nomor antrian sudah ada') {
+      if (!data) {
+        Alert.alert('Warning', 'Anda harus registrai pasien dulu');
+        setShowAntrian(false);
+        return;
+      }
+
       Alert.alert('Success', 'Nomor antrian telah terdaftar');
       setShowAntrian(true);
       getAntrian();
