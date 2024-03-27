@@ -9,7 +9,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   Button,
   Card,
-  Datepicker,
   Divider,
   IndexPath,
   Input,
@@ -29,6 +28,7 @@ import {
 import {LogOut as onLogOut} from '../services/AuthService';
 import {navigate} from '../navigation/RootNavigation';
 import moment from 'moment';
+import DatePicker from 'react-native-date-picker';
 
 const jkl = ['Laki-laki', 'Perempuan'];
 
@@ -49,24 +49,35 @@ const Pasien = () => {
   // data form
   const [noRM, setNoRM] = useState('');
   const [date, setDate] = useState(new Date());
+  const [openDate, setOpenDate] = useState(false);
   const [nama, setNama] = useState('');
   const [tempatLahir, setTempatLahir] = useState('');
   const [alamat, setAlamat] = useState('');
   const [telepon, setTelepon] = useState('');
 
+  const [tglUpdate, setTglUpdate] = useState('');
+  // const updateTgllahir = () => {
+  //   console.log(date);
+  //   const year = date.getFullYear();
+  //   const month = String(date.getMonth() + 1).padStart(2, '0');
+  //   const day = String(date.getDate()).padStart(2, '0');
+  //   const tgl_lahir_update = `${day}/${month}/${year}`;
+  //   console.log(tgl_lahir_update);
+  //   setTglUpdate(tgl_lahir_update);
+  // };
+
   //   proses registresi
-  const onRegis = async status => {
-    console.log(status);
-    if (nama == '' || tempatLahir == '' || telepon == '') {
+  const onRegis = async () => {
+    if (nama === '' || tempatLahir === '' || telepon === '') {
       Alert.alert('Warning', 'Form tidak boleh ada yang kosong');
       return;
     }
 
     const user_id = await AsyncStorage.getItem('user_id');
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Menambahkan leading zero jika bulan hanya satu digit
-    const day = String(date.getDate()).padStart(2, '0'); // Menambahkan leading zero jika tanggal hanya satu digit
-    const formattedDate = `${year}-${month}-${day}`;
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${day}/${month}/${year}`;
 
     const data = [
       nama,
@@ -78,15 +89,10 @@ const Pasien = () => {
       user_id,
     ];
 
-    let res = false;
+    console.log(data[2]);
 
-    if (status === 'create') {
-      console.log('create');
-      res = await RegisService(data);
-    } else {
-      console.log('update');
-      res = await updateRegis(data, noRM);
-    }
+    console.log('create');
+    const res = await RegisService(data);
 
     console.log('res : ', res);
     if (res === false) {
@@ -128,6 +134,72 @@ const Pasien = () => {
     return;
   };
 
+  const updateProfile = async () => {
+    if (nama === '' || tempatLahir === '' || telepon === '') {
+      Alert.alert('Warning', 'Form tidak boleh ada yang kosong');
+      return;
+    }
+
+    const user_id = await AsyncStorage.getItem('user_id');
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const formattedDate = `${day}/${month}/${year}`;
+    const no_rm = await AsyncStorage.getItem('no_rm');
+
+    const data = [
+      nama,
+      tempatLahir,
+      formattedDate,
+      displayValue,
+      alamat,
+      telepon,
+      user_id,
+    ];
+
+    console.log('update');
+    const res = await updateRegis(data, no_rm);
+
+    console.log('res : ', res);
+    if (res === false) {
+      Alert.alert('Warning', 'Profil gagal di lengkapi');
+      return;
+    }
+
+    Alert.alert('Success', 'Profil berhasil di update', [
+      {
+        text: 'OK',
+        onPress: async () => {
+          setShowModal(false);
+
+          // console.log('adakah : ', res.no_rm);
+          const detail = await detailPasien(profilPasien[0]);
+          console.log('detail : ', detail);
+          // console.log('detail rm : ', detail.data?.no_rekam_medis ?? res.no_rm);
+
+          // await AsyncStorage.setItem(
+          //   'no_rm',
+          //   detail.data?.no_rekam_medis
+          // );
+          // await AsyncStorage.setItem('nama', nama);
+          // await AsyncStorage.setItem('tempat_lahir', tempatLahir);
+          // await AsyncStorage.setItem('tgl_lahir', formattedDate);
+          // await AsyncStorage.setItem('jkl', displayValue);
+          // await AsyncStorage.setItem('alamat', alamat);
+          // await AsyncStorage.setItem('no_telpon', telepon);
+
+          // setNama('');
+          // setAlamat('');
+          // setTempatLahir('');
+          // setTelepon('');
+          onRefresh();
+          setIsRegis(true);
+        },
+      },
+    ]);
+    return;
+  };
+
   const onRefresh = useCallback(() => {
     console.log('refresh page');
     setRefreshPage(true);
@@ -137,7 +209,7 @@ const Pasien = () => {
     }, 1500);
   }, []);
 
-  // update data pasien
+  // set data pasien
   const setProfile = async () => {
     const no_rm = await AsyncStorage.getItem('no_rm');
     const detail = await detailPasien(no_rm);
@@ -149,14 +221,16 @@ const Pasien = () => {
       setIsRegis(false);
       return;
     } else {
+      console.log(no_rm);
+      console.log(res);
       setProfilPasien([
-        res?.no_rekam_medis ?? '',
-        res?.nama ?? '',
-        res?.tempat_lahir ?? '',
-        moment(res?.tgl_lahir ?? '').format('DD-MM-YYYY'),
-        res?.jkl ?? '',
-        res?.alamat ?? '',
-        res?.no_telpon ?? '',
+        res?.no_rekam_medis,
+        res?.nama,
+        res?.tempat_lahir,
+        moment(res?.tgl_lahir).format('DD/MM/YYYY'),
+        res?.jkl,
+        res?.alamat,
+        res?.no_telpon,
       ]);
 
       setIsRegis(true);
@@ -164,9 +238,9 @@ const Pasien = () => {
   };
 
   useEffect(() => {
+    console.log('use effect : ', isUpdate);
     setTimeout(() => {
       setProfile();
-
       if (!isUpdate) {
         setNoRM(profilPasien[0]);
         setNama(profilPasien[1]);
@@ -207,24 +281,24 @@ const Pasien = () => {
                   mb={20}
                   padder>
                   <VStack justify="flex-start">
-                    <Text category="h6">NO REKAM MEDIS </Text>
-                    <Text category="h6">NAMA </Text>
-                    <Text category="h6">TEMPAT LAHIR </Text>
-                    <Text category="h6">TGL LAHIR </Text>
-                    <Text category="h6">JENIS KELAMIN </Text>
-                    <Text category="h6">ALAMAT </Text>
-                    <Text category="h6">NO TELEPON </Text>
-                    {/* <Text category="h5">{profilPasien[0]}</Text>
-              <Text category="h5">{profilPasien[1]}</Text> */}
+                    <Text style={styles.infoPasien}>NO REKAM MEDIS </Text>
+                    <Text style={styles.infoPasien}>NAMA </Text>
+                    <Text style={styles.infoPasien}>TEMPAT LAHIR </Text>
+                    <Text style={styles.infoPasien}>TGL LAHIR </Text>
+                    <Text style={styles.infoPasien}>JENIS KELAMIN </Text>
+                    <Text style={styles.infoPasien}>ALAMAT </Text>
+                    <Text style={styles.infoPasien}>NO TELEPON </Text>
+                    {/* <Text style={styles.infoPasien} >{profilPasien[0]}</Text>
+              <Text style={styles.infoPasien} >{profilPasien[1]}</Text> */}
                   </VStack>
                   <VStack justify="flex-start" ps={34}>
-                    <Text category="h6">: {profilPasien[0]}</Text>
-                    <Text category="h6">: {profilPasien[1]} </Text>
-                    <Text category="h6">: {profilPasien[2]}</Text>
-                    <Text category="h6">: {profilPasien[3]} </Text>
-                    <Text category="h6">: {profilPasien[4]} </Text>
-                    <Text category="h6">: {profilPasien[5]} </Text>
-                    <Text category="h6">: {profilPasien[6]} </Text>
+                    <Text style={styles.infoPasien}>: {profilPasien[0]}</Text>
+                    <Text style={styles.infoPasien}>: {profilPasien[1]} </Text>
+                    <Text style={styles.infoPasien}>: {profilPasien[2]}</Text>
+                    <Text style={styles.infoPasien}>: {profilPasien[3]} </Text>
+                    <Text style={styles.infoPasien}>: {profilPasien[4]} </Text>
+                    <Text style={styles.infoPasien}>: {profilPasien[5]} </Text>
+                    <Text style={styles.infoPasien}>: {profilPasien[6]} </Text>
                   </VStack>
                 </HStack>
                 <Button
@@ -232,6 +306,16 @@ const Pasien = () => {
                   onPress={() => {
                     setShowModal(true);
                     setIsUpdate(true);
+                    setTimeout(() => {
+                      setProfile();
+                      if (isUpdate) {
+                        setNoRM(profilPasien[0]);
+                        setNama(profilPasien[1]);
+                        setTempatLahir(profilPasien[2]);
+                        setAlamat(profilPasien[5]);
+                        setTelepon(profilPasien[6]);
+                      }
+                    }, 500);
                   }}>
                   Update Pasien
                 </Button>
@@ -262,8 +346,6 @@ const Pasien = () => {
           <Divider />
         </ScrollView>
       )}
-
-      <HistoryAntrian />
 
       {/* Form Modal */}
       <Modal
@@ -296,15 +378,40 @@ const Pasien = () => {
           </VStack>
 
           {/* Tanggal lahir */}
-          <Datepicker
-            style={{marginBottom: 24}}
+          <Button onPress={() => setOpenDate(true)}>Pilih tanggal lahir</Button>
+          <DatePicker
+            modal
+            mode="date"
+            locale="id"
+            open={openDate}
             date={date}
-            onSelect={v => setDate(v)}
+            onDateChange={setDate}
+            onConfirm={date => {
+              console.log('confirm date: ', date);
+              setOpenDate(false);
+              setDate(date);
+
+              const year = date.getFullYear();
+              const month = String(date.getMonth() + 1).padStart(2, '0');
+              const day = String(date.getDate()).padStart(2, '0');
+              const tgl_lahir_update = `${day}/${month}/${year}`;
+              setTglUpdate(tgl_lahir_update);
+            }}
+            onCancel={() => {
+              setOpenDate(false);
+            }}
+          />
+          <Input
+            style={{marginBottom: 6, marginTop: 24, color: 'black'}}
+            size="large"
+            keyboardType="numeric"
+            placeholder="Klik button tanggal lahir"
+            value={tglUpdate ? tglUpdate : profilPasien[3]}
           />
 
           {/* Jenis Kelamin */}
           <Select
-            style={{marginBottom: 24}}
+            style={{marginBottom: 24, marginTop: 12}}
             selectedIndex={selectedIndex}
             value={displayValue}
             placeholder={'Pilih jenis kelamin'}
@@ -336,7 +443,7 @@ const Pasien = () => {
             <Button status="danger" onPress={() => setShowModal(false)}>
               Batal
             </Button>
-            <Button onPress={() => onRegis(isUpdate ? 'update' : 'create')}>
+            <Button onPress={() => (isUpdate ? updateProfile() : onRegis())}>
               Submit
             </Button>
           </HStack>
@@ -351,6 +458,10 @@ export default Pasien;
 const styles = StyleSheet.create({
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  infoPasien: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   shadow: {
     shadowColor: '#000000',

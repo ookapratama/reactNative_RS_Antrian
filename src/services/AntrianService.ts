@@ -20,7 +20,8 @@ export const buatAntrian = async (data: any) => {
   console.log('service : ', data);
   try {
     const datas = await axios.post(`${BASE_URL_API}/antrian/create`, {
-      no_rekam_medis: data,
+      no_rekam_medis: data[0],
+      id_spesialis: data[1],
     });
     const res = datas.data;
     console.log(res);

@@ -1,20 +1,7 @@
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {
-  Button,
-  Card,
-  Divider,
-  List,
-  ListItem,
-  Text,
-} from '@ui-kitten/components';
-import {Container, Content, HStack, VStack} from '.';
+import {Card, Divider, Text} from '@ui-kitten/components';
+import {Content, HStack} from '.';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getHistory} from '../services/PasienService';
 import moment from 'moment';
@@ -25,12 +12,9 @@ const data = new Array(18).fill({
   no_antrian: '0001',
 });
 
-console.log(data);
-
 const HistoryAntrian = () => {
   const [history, setHistory] = useState([]);
   const [isHistory, setIsHistory] = useState(false);
-  const [formatDate, setFormatData] = useState('');
 
   const dataHistory = async () => {
     try {
@@ -55,14 +39,8 @@ const HistoryAntrian = () => {
 
   return (
     <View>
-      <HStack level="4">
-        <Text category="h4" style={{margin: 12}}>
-          Riwayat Antrian
-        </Text>
-      </HStack>
       {isHistory ? (
         <FlatList
-          style={{height: 320}}
           data={history.data}
           renderItem={({item}) => (
             <Content>
@@ -83,14 +61,12 @@ const HistoryAntrian = () => {
           )}
         />
       ) : (
-        // <HStack justify="center" mt={24}>
-        // </HStack>
-        <Content style={{height: 320}}>
+        <Content>
           <Card
             status="basic"
             style={{marginHorizontal: 12, marginVertical: 6}}>
             <Text style={{textAlign: 'center'}} category="h6">
-              Riwayat Antrian tidak ada
+              Riwayat Antrian belum ada.{'\n'} Silahkan ambil antrian
             </Text>
           </Card>
           <Divider />

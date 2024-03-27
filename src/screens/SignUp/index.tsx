@@ -25,7 +25,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const debounceHandler = debounce(nama, username, password, 1000);
+  const debounceHandler = debounce(nama, username, password, 500);
 
   // Toggle icon password
   const toggleSecurity = () => {
@@ -102,23 +102,22 @@ const SignUp = () => {
             onChangeText={v => setPassword(v)}
           />
         </VStack>
-        <Text
-          style={{textAlign: 'center', marginBottom: 22, letterSpacing: 0.5}}>
-          Have an account?{'\t'}
-          <Text
-            status="primary"
-            style={{fontWeight: 'bold'}}
-            onPress={() => navigate('SignIn')}>
-            Sign in
-          </Text>
-        </Text>
         <Button
           appearance="outline"
           size="large"
           style={{marginHorizontal: 32, borderRadius: 12}}
           onPress={() => onSignUp()}>
-          <Text>Sign up</Text>
+          <Text>Register</Text>
         </Button>
+        <Text style={{textAlign: 'center', marginTop: 22, letterSpacing: 0.5}}>
+          Have an account?{'\t'}
+          <Text
+            status="primary"
+            style={{fontWeight: 'bold'}}
+            onPress={() => navigate('SignIn')}>
+            Login
+          </Text>
+        </Text>
       </View>
     </Container>
   );

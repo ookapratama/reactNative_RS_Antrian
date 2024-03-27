@@ -10,6 +10,7 @@ import React, {useState} from 'react';
 import {
   Container,
   HStack,
+  HistoryAntrian,
   IDivider,
   IconNavigation,
   Pasien,
@@ -43,16 +44,23 @@ const onLogOut = () => {
 const Home = () => {
   const styles = useStyleSheet(themedStyles);
 
-  const [activePasien, setActivePasien] = useState(false);
   const [activeAntrian, setActiveAntrian] = useState(true);
+  const [activePasien, setActivePasien] = useState(false);
+  const [activeRiwayat, setActiveRiwayat] = useState(false);
 
   const handleActvieMenu = (menuName: string) => {
     if (menuName === 'Pasien') {
       setActivePasien(true);
       setActiveAntrian(false);
+      setActiveRiwayat(false);
     } else if (menuName === 'Antrian') {
       setActiveAntrian(true);
       setActivePasien(false);
+      setActiveRiwayat(false);
+    } else if (menuName === 'Riwayat') {
+      setActiveAntrian(false);
+      setActivePasien(false);
+      setActiveRiwayat(true);
     }
   };
 
@@ -80,15 +88,31 @@ const Home = () => {
           Antrian
         </Text>
         <Text
-          style={[[styles.menu, {color: activePasien ? 'black' : 'grey'}]]}
+          style={[
+            [
+              styles.menu,
+              {color: activePasien ? 'black' : 'grey', marginRight: 24},
+            ],
+          ]}
           onPress={() => handleActvieMenu('Pasien')}>
           Pasien
+        </Text>
+        <Text
+          style={[[styles.menu, {color: activeRiwayat ? 'black' : 'grey'}]]}
+          onPress={() => handleActvieMenu('Riwayat')}>
+          Riwayat
         </Text>
       </HStack>
 
       {/* Navigation Antrain dan Pasien */}
 
-      {activeAntrian ? <Antrian /> : <Pasien />}
+      {activeAntrian ? (
+        <Antrian />
+      ) : activePasien ? (
+        <Pasien />
+      ) : (
+        <HistoryAntrian />
+      )}
     </View>
   );
 };
