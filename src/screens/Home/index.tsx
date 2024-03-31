@@ -10,6 +10,7 @@ import React, {useEffect, useState} from 'react';
 import {
   AntrianDokter,
   Container,
+  DaftarPasien,
   HStack,
   HistoryAntrian,
   IDivider,
@@ -106,8 +107,10 @@ const Home = () => {
         />
       </HStack>
 
-      <HStack ph={24} mt={-15} level='4'>
-        <Text category='h6'>Selamat Datang, {role === 'D' ? 'Dokter' : ''}</Text>
+      <HStack ph={24} mt={-15} level="4">
+        <Text category="h6">
+          Selamat Datang {role === 'D' ? ', Dokter' : ''}
+        </Text>
       </HStack>
 
       {role === 'D' ? (
@@ -117,7 +120,7 @@ const Home = () => {
               styles.menu,
               {color: activeAntrianDokter ? 'black' : 'grey', marginRight: 24},
             ]}
-            onPress={() => handleActvieMenu('Antrian')}>
+            onPress={() => handleActvieMenu('Antrian Dokter')}>
             Antrian
           </Text>
           <Text
@@ -127,7 +130,7 @@ const Home = () => {
                 {color: activeDaftarPasien ? 'black' : 'grey', marginRight: 24},
               ],
             ]}
-            onPress={() => handleActvieMenu('Pasien')}>
+            onPress={() => handleActvieMenu('Daftar Pasien')}>
             Daftar Pasien
           </Text>
         </HStack>
@@ -161,7 +164,13 @@ const Home = () => {
 
       {/* Navigation Antrain dan Pasien */}
       {role === 'D' ? (
-        <AntrianDokter />
+        <>
+          {activeAntrianDokter ? (
+            <AntrianDokter />
+          ) : (
+            <DaftarPasien />
+          )}
+        </>
       ) : (
         <>
           {activeAntrian ? (

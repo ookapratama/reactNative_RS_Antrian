@@ -20,6 +20,7 @@ import {
 const AntrianDokter = () => {
   const [showAntrian, setShowAntrian] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
+  const [isButton, setIsButton] = useState(true);
 
   const [data, setData] = useState([]);
   const [formattedDate, setFormattedDate] = useState();
@@ -54,19 +55,19 @@ const AntrianDokter = () => {
 
   const getAntrian = async () => {
     const resData = await showAntrianDokter();
-    const getData = resData.sekarang ?? resData.selanjutnya;
+    const getData = resData.sekarang;
 
-    console.log('get : ', getData);
+    console.log('get : ', resData);
 
-    if (getData != undefined) {
+    if (getData != null) {
       setShowAntrian(true);
-      setFormattedDate(
-        moment(getData.tgl_antrian).format('DD-MM-YYYY'),
-      );
+      setFormattedDate(moment(getData.tgl_antrian).format('DD-MM-YYYY'));
       setIdAntrian(getData.id);
+      setIsButton(false);
       return setData(getData);
     }
     setShowAntrian(false);
+    setIsButton(true);
     return setData(getData?.message);
   };
 
@@ -199,25 +200,29 @@ const AntrianDokter = () => {
           </HStack>
         )}
 
-        <Button
-          onPress={() => {
-            Alert.alert('Warning', 'Ke nomor antrian selanjutnya ?', [
-              {
-                text: 'Batal',
-                style: 'cancel',
-              },
-              {
-                text: 'YA',
-                onPress: () => {
-                  clearAntrian();
+        {isButton ? (
+          <></>
+        ) : (
+          <Button
+            onPress={() => {
+              Alert.alert('Warning', 'Ke nomor antrian selanjutnya ?', [
+                {
+                  text: 'Batal',
+                  style: 'cancel',
                 },
-              },
-            ]);
-          }}
-          size="large"
-          style={{marginHorizontal: 54, marginVertical: 24}}>
-          Antrian Selanjutnya
-        </Button>
+                {
+                  text: 'YA',
+                  onPress: () => {
+                    clearAntrian();
+                  },
+                },
+              ]);
+            }}
+            size="large"
+            style={{marginHorizontal: 54, marginVertical: 24}}>
+            Antrian Selanjutnya
+          </Button>
+        )}
       </ScrollView>
     </Container>
   );

@@ -14,6 +14,18 @@ export const showAntrian = async () => {
   }
 };
 
+export const showAllAntrian = async () => {
+  console.log('Show Antrian Service');
+  try {
+    const datas = await axios.get(`${BASE_URL_API}/antrian`);
+    const res = datas.data;
+    return res;
+  } catch (error) {
+    console.log(error.response.data);
+    return false;
+  }
+};
+
 export const buatAntrian = async (id: any) => {
   console.log('selesaikan antrian service');
   console.log('service : ', id);

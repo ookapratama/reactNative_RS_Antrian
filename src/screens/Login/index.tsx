@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {Container, VStack} from '../../components';
+import {Container, HStack, VStack} from '../../components';
 import {Button, Icon, Input, Spinner, Text} from '@ui-kitten/components';
 import {
   Alert,
@@ -69,8 +69,6 @@ const Login = () => {
         await AsyncStorage.setItem('user_id', data.data.id);
         await AsyncStorage.setItem('status', JSON.stringify(true));
 
-
-
         navigate('Home');
       }, 4000);
     }, 500);
@@ -97,12 +95,16 @@ const Login = () => {
   return (
     <Container level="1">
       <View style={{flex: 1, justifyContent: 'center'}}>
-        <VStack mh={20} mb={50} mt={-140}>
-          <Text style={{fontSize: 64, marginBottom: 24}} category="h1">
+        <VStack justify="center" itemsCenter mh={20}  mt={-140}>
+          <Text
+            style={{fontSize: 64, marginBottom: 24, textAlign: 'center'}}
+            category="h1">
             Apotek {'\n'}Ika Farma
           </Text>
-          <Text style={{fontSize: 20}}>Silahkan login untuk lanjut</Text>
         </VStack>
+        <HStack mh={20} mb={50}>
+          <Text style={{fontSize: 20}}>Silahkan login untuk lanjut</Text>
+        </HStack>
         <VStack mh={20} mb={54}>
           <Input
             style={{marginBottom: 24}}

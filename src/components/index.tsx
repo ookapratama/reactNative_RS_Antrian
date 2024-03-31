@@ -12,6 +12,7 @@ import Pasien from "./Pasien";
 import HistoryAntrian from "./HistoryAntrian";
 import Riwayat from "./Riwayat";
 import AntrianDokter from "./AntrianDokter";
+import DaftarPasien from "./DaftarPasien";
 
 export {
     HStack,
@@ -27,5 +28,6 @@ export {
     Pasien,
     HistoryAntrian,
     Riwayat,
-    AntrianDokter
+    AntrianDokter,
+    DaftarPasien
 }
