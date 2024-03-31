@@ -73,9 +73,9 @@ const SignUp = () => {
       <View style={{flex: 1, justifyContent: 'center'}}>
         <VStack mh={20} mb={50} mt={-140}>
           <Text style={{fontSize: 64, marginBottom: 24}} category="h1">
-            Welcome {'\n'}user
+            Apotek {'\n'}Ika Farma
           </Text>
-          <Text style={{fontSize: 20}}>Sign up to join</Text>
+          <Text style={{fontSize: 20}}>Silahkan registrasi akun untuk login</Text>
         </VStack>
         <VStack mh={20} mb={54}>
           <Input

@@ -64,9 +64,13 @@ const Login = () => {
       setTimeout(async () => {
         await AsyncStorage.setItem('nama', data.data.nama);
         await AsyncStorage.setItem('username', data.data.username);
+        await AsyncStorage.setItem('level', data.data.level);
         await AsyncStorage.setItem('no_rm', data.data?.no_rm ?? '');
         await AsyncStorage.setItem('user_id', data.data.id);
         await AsyncStorage.setItem('status', JSON.stringify(true));
+
+
+
         navigate('Home');
       }, 4000);
     }, 500);
@@ -95,9 +99,9 @@ const Login = () => {
       <View style={{flex: 1, justifyContent: 'center'}}>
         <VStack mh={20} mb={50} mt={-140}>
           <Text style={{fontSize: 64, marginBottom: 24}} category="h1">
-            Welcome {'\n'}Back
+            Apotek {'\n'}Ika Farma
           </Text>
-          <Text style={{fontSize: 20}}>Sign in to continue</Text>
+          <Text style={{fontSize: 20}}>Silahkan login untuk lanjut</Text>
         </VStack>
         <VStack mh={20} mb={54}>
           <Input
