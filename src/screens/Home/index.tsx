@@ -23,6 +23,9 @@ import {LogOut} from '../../services/AuthService';
 import {navigate} from '../../navigation/RootNavigation';
 import Antrian from '../../components/Antrian';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
+import {getDate} from '../../services/DateService';
+require('moment/locale/id');
 
 const onLogOut = () => {
   Alert.alert('Warning', 'Ingin Logout Akun? ', [
@@ -55,6 +58,24 @@ const Home = () => {
   // untuk role dokter
   const [activeAntrianDokter, setActiveAntrianDokter] = useState(true);
   const [activeDaftarPasien, setActiveDaftarPasien] = useState(false);
+
+  // getDate
+  const [dateActive, setDateActive] = useState([]);
+  const lagiBuka =
+    dateActive?.hari === 'Minggu'
+      ? ', Apotik Tutup'
+      : `, terbuka dari ${dateActive?.jam_buka ?? ''} - ${
+          dateActive?.jam_tutup ?? ''
+        } WIT`;
+  const getToday = async () => {
+    try {
+      const getData = await getDate(moment().format('dddd'));
+      setDateActive(getData.data);
+      console.log(getData.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleActvieMenu = (menuName: string) => {
     if (role === 'D') {
@@ -90,6 +111,7 @@ const Home = () => {
 
   useEffect(() => {
     getLevel();
+    getToday();
   }, []);
 
   return (
@@ -162,15 +184,16 @@ const Home = () => {
         </HStack>
       )}
 
+      {/* Information */}
+      <HStack ps={12} pv={10} style={{backgroundColor: '#446DF6'}}>
+        <Text style={{color: 'white'}}>
+          Ini hari {`${moment().format('dddd')} ${lagiBuka}`}
+        </Text>
+      </HStack>
+
       {/* Navigation Antrain dan Pasien */}
       {role === 'D' ? (
-        <>
-          {activeAntrianDokter ? (
-            <AntrianDokter />
-          ) : (
-            <DaftarPasien />
-          )}
-        </>
+        <>{activeAntrianDokter ? <AntrianDokter /> : <DaftarPasien />}</>
       ) : (
         <>
           {activeAntrian ? (
