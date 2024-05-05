@@ -62,8 +62,8 @@ const Home = () => {
   // getDate
   const [dateActive, setDateActive] = useState([]);
   const lagiBuka =
-    dateActive?.hari === 'Minggu'
-      ? ', Apotik Tutup'
+    dateActive.hari === 'Minggu'
+      ? `, Apotek sedang ${dateActive.jam_buka}`
       : `, terbuka dari ${dateActive?.jam_buka ?? ''} - ${
           dateActive?.jam_tutup ?? ''
         } WIT`;
@@ -187,7 +187,7 @@ const Home = () => {
       {/* Information */}
       <HStack ps={12} pv={10} style={{backgroundColor: '#446DF6'}}>
         <Text style={{color: 'white'}}>
-          Ini hari {`${moment().format('dddd')} ${lagiBuka}`}
+          Ini hari {`${dateActive.hari}${lagiBuka}`}
         </Text>
       </HStack>
 
