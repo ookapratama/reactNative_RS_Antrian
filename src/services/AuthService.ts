@@ -35,7 +35,6 @@ export const SignIn = async (data: any) => {
       password: data[1],
     });
     const res = datas.data;
-    console.log(res)
     return res;
   } catch (error) {
     console.log(error.response.data);

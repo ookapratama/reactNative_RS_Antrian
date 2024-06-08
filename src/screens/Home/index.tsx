@@ -67,11 +67,15 @@ const Home = () => {
       : `, terbuka dari ${dateActive?.jam_buka ?? ''} - ${
           dateActive?.jam_tutup ?? ''
         } WIT`;
+
+  const dokterHariIni = dateActive?.dokter?.map(i => i.nama + ' | ') || [];
+  // const dokterHariIni = ' '
+
   const getToday = async () => {
     try {
       const getData = await getDate(moment().format('dddd'));
       setDateActive(getData.data);
-      console.log(getData.data)
+      console.log(getData.data.dokter);
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +109,7 @@ const Home = () => {
 
   const getLevel = async () => {
     const level = await AsyncStorage.getItem('level');
-    console.log(level);
+    // console.log(level);
     setRole(level);
   };
 
@@ -185,11 +189,14 @@ const Home = () => {
       )}
 
       {/* Information */}
-      <HStack ps={12} pv={10} style={{backgroundColor: '#446DF6'}}>
+      <VStack ps={12} pv={10} style={{backgroundColor: '#446DF6'}}>
         <Text style={{color: 'white'}}>
           Ini hari {`${dateActive.hari}${lagiBuka}`}
         </Text>
-      </HStack>
+        <Text style={{color: 'white', paddingTop: 5}}>
+          Dokter hari ini : {dokterHariIni}
+        </Text>
+      </VStack>
 
       {/* Navigation Antrain dan Pasien */}
       {role === 'D' ? (
