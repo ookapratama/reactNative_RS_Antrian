@@ -1,30 +1,50 @@
-import {Alert, RefreshControl, ScrollView, StyleSheet} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import React, {Children, useCallback, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import {
   Button,
   Card,
+  Divider,
   IndexPath,
   Modal,
   Select,
   SelectItem,
   Text,
 } from '@ui-kitten/components';
-import {Container, HStack, VStack} from '.';
+import {Container, Content, HStack, VStack} from '.';
 import {
   showAntrian as showAntrianDokter,
   buatAntrian as clearAntrianService,
+  showAllAntrian as showAll,
 } from '../services/DokterService';
 
 const AntrianDokter = () => {
   const [showAntrian, setShowAntrian] = useState(false);
+
   const [refreshPage, setRefreshPage] = useState(false);
   const [isButton, setIsButton] = useState(true);
 
   const [data, setData] = useState([]);
+  const [dataAntrian, setDataAntrian] = useState([]);
   const [formattedDate, setFormattedDate] = useState();
   const [idAntrian, setIdAntrian] = useState();
+
+  const getAll = async () => {
+    try {
+      const dataAll = await showAll();
+      // console.log(dataAll);
+      setDataAntrian(dataAll);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const clearAntrian = async () => {
     const data = await clearAntrianService(idAntrian);
@@ -73,100 +93,102 @@ const AntrianDokter = () => {
 
   useEffect(() => {
     getAntrian();
+    getAll();
   }, []);
   return (
     <Container>
-      <ScrollView
+      {/* <ScrollView
         refreshControl={
-          <RefreshControl refreshing={refreshPage} onRefresh={onRefresh} />
-        }>
-        <VStack itemsCenter mt={26} mb={16}>
-          <Text
-            style={{
-              fontSize: 32,
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              letterSpacing: 1,
-              marginBottom: 8,
-            }}>
-            Antrian
-          </Text>
-        </VStack>
+          }> */}
+      <RefreshControl refreshing={refreshPage} onRefresh={onRefresh} />
+      {/* diatas satu component terpisah */}
+      <VStack itemsCenter mt={26} mb={16}>
+        <Text
+          style={{
+            fontSize: 32,
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            letterSpacing: 1,
+            marginBottom: 8,
+          }}>
+          Antrian
+        </Text>
+      </VStack>
 
-        {showAntrian ? (
-          <>
-            <VStack level="4" mh={54} border={18} pb={34} pt={14} itemsCenter>
-              <Text
-                style={{
-                  fontSize: 24,
-                  fontWeight: 'bold',
-                  letterSpacing: 2,
-                  textTransform: 'uppercase',
-                }}>
-                No. Antrian
-              </Text>
-              <Text
-                style={{
-                  fontSize: 42,
-                  fontWeight: 'bold',
-                  letterSpacing: 2,
-                }}>
-                {data?.no_antrian}
-              </Text>
-            </VStack>
+      {showAntrian ? (
+        <>
+          <VStack level="4" mh={54} border={18} pb={34} pt={14} itemsCenter>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+                letterSpacing: 2,
+                textTransform: 'uppercase',
+              }}>
+              No. Antrian
+            </Text>
+            <Text
+              style={{
+                fontSize: 42,
+                fontWeight: 'bold',
+                letterSpacing: 2,
+              }}>
+              {data?.no_antrian}
+            </Text>
+          </VStack>
 
-            <HStack
-              level="4"
-              mh={54}
-              mt={-35}
-              pv={34}
-              ph={10}
-              justify="space-between">
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  letterSpacing: 2,
-                }}>
-                Rekam Medis
-              </Text>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  letterSpacing: 2,
-                }}>
-                {data?.no_rekam_medis ?? ''}
-              </Text>
-            </HStack>
+          <HStack
+            level="4"
+            mh={54}
+            mt={-35}
+            pv={34}
+            ph={10}
+            justify="space-between">
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                letterSpacing: 2,
+              }}>
+              Rekam Medis
+            </Text>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                letterSpacing: 2,
+              }}>
+              {data?.no_rekam_medis ?? ''}
+            </Text>
+          </HStack>
 
-            <HStack
-              style={{borderBottomLeftRadius: 18, borderBottomRightRadius: 18}}
-              level="4"
-              mh={54}
-              mt={-35}
-              pv={14}
-              ph={10}
-              justify="space-between">
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  letterSpacing: 2,
-                }}>
-                Tanggal
-              </Text>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                  letterSpacing: 2,
-                }}>
-                {formattedDate}
-              </Text>
-            </HStack>
+          <HStack
+            style={{borderBottomLeftRadius: 18, borderBottomRightRadius: 18}}
+            level="4"
+            mh={54}
+            mt={-35}
+            pv={14}
+            ph={10}
+            justify="space-between">
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                letterSpacing: 2,
+              }}>
+              Tanggal
+            </Text>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 'bold',
+                letterSpacing: 2,
+              }}>
+              {formattedDate}
+            </Text>
+          </HStack>
 
-            {/* <VStack
+          {/* <VStack
               level="4"
               mh={54}
               border={18}
@@ -184,46 +206,68 @@ const AntrianDokter = () => {
                 {data?.antrian}
               </Text>
             </VStack> */}
-          </>
-        ) : (
-          <HStack
-            style={[styles.shadow, {borderRadius: 12}]}
-            level="4"
-            padder
-            itemsCenter
-            justify="center"
-            mh={54}
-            mb={20}>
-            <Text category="h5" style={{}}>
-              Belum ada Antrian
-            </Text>
-          </HStack>
-        )}
+        </>
+      ) : (
+        <HStack
+          style={[styles.shadow, {borderRadius: 12}]}
+          level="4"
+          padder
+          itemsCenter
+          justify="center"
+          mh={54}
+          mb={20}>
+          <Text category="h5" style={{}}>
+            Belum ada Antrian
+          </Text>
+        </HStack>
+      )}
 
-        {isButton ? (
-          <></>
-        ) : (
-          <Button
-            onPress={() => {
-              Alert.alert('Warning', 'Ke nomor antrian selanjutnya ?', [
-                {
-                  text: 'Batal',
-                  style: 'cancel',
+      {isButton ? (
+        <></>
+      ) : (
+        <Button
+          onPress={() => {
+            Alert.alert('Warning', 'Ke nomor antrian selanjutnya ?', [
+              {
+                text: 'Batal',
+                style: 'cancel',
+              },
+              {
+                text: 'YA',
+                onPress: () => {
+                  clearAntrian();
                 },
-                {
-                  text: 'YA',
-                  onPress: () => {
-                    clearAntrian();
-                  },
-                },
-              ]);
-            }}
-            size="large"
-            style={{marginHorizontal: 54, marginVertical: 24}}>
-            Antrian Selanjutnya
-          </Button>
+              },
+            ]);
+          }}
+          size="large"
+          style={{marginHorizontal: 54, marginVertical: 24}}>
+          Antrian Selanjutnya
+        </Button>
+      )}
+
+      <FlatList
+        data={dataAntrian.data}
+        renderItem={({item}) => (
+          <Content>
+            {/* <Text>Tes Antrian</Text> */}
+            <Card
+              status="basic"
+              style={{marginHorizontal: 12, marginVertical: 6}}>
+              <HStack>
+                <Text category="h5">{item.no_rekam_medis}</Text>
+                <Text category="h6">
+                  {' '}
+                  {moment(item.tgl_antrian).format('DD-MM-YYYY')}
+                </Text>
+              </HStack>
+              <Text category="s1">Antrian : {item.no_antrian}</Text>
+            </Card>
+            <Divider />
+          </Content>
         )}
-      </ScrollView>
+      />
+      {/* </ScrollView> */}
     </Container>
   );
 };

@@ -121,7 +121,7 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <HStack level="4" padding={24} itemsCenter>
-        <Text style={{fontSize: 50, fontWeight: '700', color: 'black'}}>
+        <Text style={{fontSize: 42, fontWeight: '700', color: 'black'}}>
           Home
         </Text>
 
@@ -133,7 +133,7 @@ const Home = () => {
         />
       </HStack>
 
-      <HStack ph={24} mt={-15} level="4">
+      <HStack ph={24} mt={-24} level="4">
         <Text category="h6">
           Selamat Datang {role === 'D' ? ', Dokter' : ''}
         </Text>
