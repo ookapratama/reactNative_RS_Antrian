@@ -97,9 +97,9 @@ const Login = () => {
       <View style={{flex: 1, justifyContent: 'center'}}>
         <VStack justify="center" itemsCenter mh={20}  mt={-140}>
           <Text
-            style={{fontSize: 64, marginBottom: 24, textAlign: 'center'}}
+            style={{fontSize: 52, marginBottom: 24, textAlign: 'center'}}
             category="h1">
-            Apotek {'\n'}Ika Farma
+            Puskesmas {'\n'}Antang Perumnas
           </Text>
         </VStack>
         <HStack mh={20} mb={50}>
